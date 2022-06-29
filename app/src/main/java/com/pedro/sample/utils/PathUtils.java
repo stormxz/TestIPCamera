@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pedro.sample;
+package com.pedro.sample.utils;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -27,12 +27,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
 import java.io.File;
-
-/**
- * Created by pedro on 21/06/17.
- * Get absolute path from onActivityResult
- * https://stackoverflow.com/questions/33295300/how-to-get-absolute-path-in-android-for-file
- */
 
 public class PathUtils {
 
