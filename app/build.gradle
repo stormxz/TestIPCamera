@@ -19,12 +19,6 @@ android {
         }
     }
 
-    repositories {
-        flatDir {
-            dirs 'libs',project(':rtspserver').file('libs')
-        }
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -32,7 +26,6 @@ android {
 }
 
 dependencies {
-    implementation project(':rtspserver')
 /*
     implementation 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:2.1.8'
 */
@@ -40,6 +33,8 @@ dependencies {
     implementation files('libs/encoder-debug.aar')
     implementation files('libs/rtmp-debug.aar')
     implementation files('libs/rtsp-debug.aar')
+    implementation files('libs/rtspserver-debug.aar')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'

@@ -1,1 +1,1 @@
-include ':app', ':rtspserver'
+include ':app'
