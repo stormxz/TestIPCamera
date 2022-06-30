@@ -1,3 +1,23 @@
+# 代码集成更加方便，将之前demo 中的rtspserver 也打包了
+# 按这个demo 为准，以后就更新aar 和 接口就行
+
+删除引用
+/*
+    implementation 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:2.1.8'
+*/
+
+使用libs encoder.aar  rtmp.aar  rtplibrary.aar rtsp.aar rtspserver.aar
+    implementation files('libs/rtplibrary.aar')
+    implementation files('libs/encoder.aar')
+    implementation files('libs/rtmp.aar')
+    implementation files('libs/rtsp.aar')
+    implementation files('libs/rtspserver.aar')
+
+
+需要clean project、 rebuild project
+---------------------------------------------------------------------------------------------------
+
+
 # CameraDemoActivity  -  双camera 以及 osd 的rtsp
 
 1. 创建rtsp server
