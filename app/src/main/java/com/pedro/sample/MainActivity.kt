@@ -25,7 +25,22 @@ class MainActivity : AppCompatActivity() {
         ActivityCompat.requestPermissions(this, PERMISSIONS, 1)
       } else {
         startActivity(Intent(this, CameraDemoActivity::class.java))
-//        startActivity(Intent(this, RtspFromFileActivity::class.java))
+      }
+    }
+
+    b_videofromfile_demo.setOnClickListener {
+      if (!hasPermissions(this, *PERMISSIONS)) {
+        ActivityCompat.requestPermissions(this, PERMISSIONS, 1)
+      } else {
+        startActivity(Intent(this, RtspFromFileActivity::class.java))
+      }
+    }
+
+    b_dual_camera_demo.setOnClickListener {
+      if (!hasPermissions(this, *PERMISSIONS)) {
+        ActivityCompat.requestPermissions(this, PERMISSIONS, 1)
+      } else {
+        startActivity(Intent(this, CameraDualDemoActivity::class.java))
       }
     }
   }

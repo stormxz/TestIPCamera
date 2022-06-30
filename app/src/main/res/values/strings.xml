@@ -28,4 +28,6 @@
     <string name="stop_record">Stop record</string>
     <string name="resync_file">ReSync file</string>
     <string name="camera_demo">Camera Demo</string>
+    <string name="videofromfile_demo">VideoFromeFile Demo</string>
+    <string name="dual_camera_demo">Dual Camera Demo</string>
 </resources>

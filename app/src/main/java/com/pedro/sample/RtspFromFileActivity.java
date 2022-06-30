@@ -78,7 +78,7 @@ public class RtspFromFileActivity extends AppCompatActivity
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     setContentView(R.layout.activity_from_file);
     folder = PathUtils.getRecordPath();
-    button = findViewById(R.id.b_start_stop);
+    button = findViewById(R.id.b_start_stop_from_file);
     bSelectFile = findViewById(R.id.b_select_file);
     button.setOnClickListener(this);
     bSelectFile.setOnClickListener(this);
@@ -202,7 +202,7 @@ public class RtspFromFileActivity extends AppCompatActivity
   @Override
   public void onClick(View view) {
     switch (view.getId()) {
-      case R.id.b_start_stop:
+      case R.id.b_start_stop_from_file:
         if (!rtspFromFile.isStreaming()) {
           try {
             if (!rtspFromFile.isRecording()) {
@@ -366,9 +366,6 @@ public class RtspFromFileActivity extends AppCompatActivity
 
   @Override
   public void onStopTrackingTouch(SeekBar seekBar) {
-    Log.e("stormxz", " seekbar progress = " + seekBar.getProgress());
-
-    if (rtspFromFile.isStreaming()) rtspFromFile.moveTo(seekBar.getProgress());
     touching = false;
   }
 }

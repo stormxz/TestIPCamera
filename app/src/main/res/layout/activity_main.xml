@@ -11,4 +11,23 @@
         android:layout_height="wrap_content"
         android:text="@string/camera_demo"
         />
+
+    <Button
+        android:id="@+id/b_dual_camera_demo"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/b_camera_demo"
+
+        android:text="@string/dual_camera_demo"
+        />
+
+    <Button
+        android:id="@+id/b_videofromfile_demo"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/b_dual_camera_demo"
+        android:layout_height="wrap_content"
+        android:text="@string/videofromfile_demo"
+        />
 </RelativeLayout>
