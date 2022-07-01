@@ -23,6 +23,13 @@
 1. 创建rtsp server
 RtspServerCamera2 rtspServerCamera1 = RtspServerCamera2(surfaceView2, this, 1935, "1")
 
+由于涉及到OSD,本项目中 surfaceview 需要使用以下自定义控件
+    <com.pedro.rtplibrary.view.OpenGlView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/surfaceView"
+        />
+
 2. 添加OSD 方法
 initTimeWaterMarkFormat()
 
