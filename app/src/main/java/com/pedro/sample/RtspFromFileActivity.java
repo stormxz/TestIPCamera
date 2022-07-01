@@ -366,6 +366,8 @@ public class RtspFromFileActivity extends AppCompatActivity
 
   @Override
   public void onStopTrackingTouch(SeekBar seekBar) {
+    Log.e("stormxz", " seekbar progress = " + seekBar.getProgress());
+    if (rtspFromFile.isStreaming()) rtspFromFile.moveTo(seekBar.getProgress());
     touching = false;
   }
 }
