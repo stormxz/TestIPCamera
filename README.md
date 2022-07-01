@@ -18,7 +18,7 @@
 ---------------------------------------------------------------------------------------------------
 
 
-# CameraDemoActivity  -  双camera 以及 osd 的rtsp
+# CameraDemoActivity  -  单camera 以及 osd 的rtsp
 
 1. 创建rtsp server
 RtspServerCamera2 rtspServerCamera1 = RtspServerCamera2(surfaceView2, this, 1935, "1")
@@ -39,10 +39,12 @@ rtspServerCamera1.getEndPointConnection()
 5. 停止rtsp 服务传输
 rtspServerCamera1.stopStream()
 
+---------------------------------------------------------------------------------------------------
 
+# CameraDualDemoActivity  -  双camera 以及 osd 的rtsp
 
-
-
+与CameraDemoActivity 内接口一致
+打开两个摄像头，经过平台测试，必须先打开id1 、 再打开id0
 
 
 
@@ -55,9 +57,8 @@ startActivity(Intent(this, CameraDemoActivity::class.java))
 2. 跳转video rtsp
 startActivity(Intent(this, RtspFromFileActivity::class.java))
 
-
-
-
+3. 跳转dual camera rtsp
+startActivity(Intent(this, CameraDualDemoActivity::class.java))
 
 
 
@@ -81,7 +82,6 @@ RtspServerFromFile rtspFromFile = new RtspServerFromFile(mRtspfromfilegl, this, 
 3. audio video prepare
 
   private boolean prepare() throws IOException {
-    Log.e("stormxz", "stormxz stream video 111");
     boolean result = rtspFromFile.prepareVideo(filePath);
     result |= rtspFromFile.prepareAudio(filePath);
     return result;
