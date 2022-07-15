@@ -99,3 +99,12 @@ RtspServerFromFile rtspFromFile = new RtspServerFromFile(mRtspfromfilegl, this, 
 
 5. 获取rtsp 地址
    rtspFromFile.getEndPointConnection()
+
+
+---------------------------------------------------------------------------------------------------
+# onConnectionSuccessRtsp(cameraId: String)
+# onConnectionFailedRtsp(reason: String, cameraId: String)
+# onDisconnectRtsp(cameraId: String)
+cameraId 定义：
+0, 1, 2..   打开的camera 对应 物理 id
+-100        本地video(虚拟设定)

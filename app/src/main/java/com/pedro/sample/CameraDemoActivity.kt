@@ -73,15 +73,15 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
 
   }
 
-  override fun onConnectionSuccessRtsp() {
+  override fun onConnectionSuccessRtsp(cameraId: String) {
     runOnUiThread {
-      Toast.makeText(this@CameraDemoActivity, "Connection success", Toast.LENGTH_SHORT).show()
+      Toast.makeText(this@CameraDemoActivity, "camera id = $cameraId is Connection success", Toast.LENGTH_SHORT).show()
     }
   }
 
-  override fun onConnectionFailedRtsp(reason: String) {
+  override fun onConnectionFailedRtsp(reason: String, cameraId: String) {
     runOnUiThread {
-      Toast.makeText(this@CameraDemoActivity, "Connection failed. $reason", Toast.LENGTH_SHORT)
+      Toast.makeText(this@CameraDemoActivity, "camera id = $cameraId is Connection failed. $reason", Toast.LENGTH_SHORT)
           .show()
       // 停止rtsp 服务
       rtspServerCamera1.stopStream()
@@ -92,9 +92,9 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
   override fun onConnectionStartedRtsp(rtspUrl: String) {
   }
 
-  override fun onDisconnectRtsp() {
+  override fun onDisconnectRtsp(cameraId: String) {
     runOnUiThread {
-      Toast.makeText(this@CameraDemoActivity, "Disconnected", Toast.LENGTH_SHORT).show()
+      Toast.makeText(this@CameraDemoActivity, "camera id = $cameraId is  Disconnected", Toast.LENGTH_SHORT).show()
     }
   }
 

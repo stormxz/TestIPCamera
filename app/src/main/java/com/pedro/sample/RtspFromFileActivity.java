@@ -132,21 +132,21 @@ public class RtspFromFileActivity extends AppCompatActivity
   }
 
   @Override
-  public void onConnectionSuccessRtsp() {
+  public void onConnectionSuccessRtsp(String cameraId) {
     runOnUiThread(new Runnable() {
       @Override
       public void run() {
-        Toast.makeText(RtspFromFileActivity.this, "Connection success", Toast.LENGTH_SHORT).show();
+        Toast.makeText(RtspFromFileActivity.this, "camera id = " + cameraId + "Connection success", Toast.LENGTH_SHORT).show();
       }
     });
   }
 
   @Override
-  public void onConnectionFailedRtsp(final String reason) {
+  public void onConnectionFailedRtsp(final String reason, String cameraId) {
     runOnUiThread(new Runnable() {
       @Override
       public void run() {
-        Toast.makeText(RtspFromFileActivity.this, "Connection failed. " + reason,
+        Toast.makeText(RtspFromFileActivity.this, "camera id = " + cameraId + "  Connection failed. " + reason,
             Toast.LENGTH_SHORT).show();
         rtspFromFile.stopStream();
         button.setText(R.string.start_button);
@@ -160,11 +160,11 @@ public class RtspFromFileActivity extends AppCompatActivity
   }
 
   @Override
-  public void onDisconnectRtsp() {
+  public void onDisconnectRtsp(String cameraId) {
     runOnUiThread(new Runnable() {
       @Override
       public void run() {
-        Toast.makeText(RtspFromFileActivity.this, "Disconnected", Toast.LENGTH_SHORT).show();
+        Toast.makeText(RtspFromFileActivity.this, "camera id = " + cameraId + "  Disconnected", Toast.LENGTH_SHORT).show();
       }
     });
   }
