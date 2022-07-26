@@ -108,3 +108,9 @@ RtspServerFromFile rtspFromFile = new RtspServerFromFile(mRtspfromfilegl, this, 
 cameraId 定义：
 0, 1, 2..   打开的camera 对应 物理 id
 -100        本地video(虚拟设定)
+
+
+---------------------------------------------------------------------------------------------------
+添加分辨率接口
+传入宽高即可
+rtspServerCamera1.prepareVideo(mPreviewW, mPreviewH))

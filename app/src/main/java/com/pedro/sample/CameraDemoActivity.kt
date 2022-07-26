@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
+import android.util.Size
 import android.view.SurfaceHolder
 import android.view.View
 import android.view.WindowManager
@@ -35,6 +37,10 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
 
   private var currentDateAndTime_watermark = ""
 
+  private var mPreviewW: Int = 1920
+  private var mPreviewH: Int = 1080
+
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -43,9 +49,17 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
     button = findViewById(R.id.b_start_stop)
     button.setOnClickListener(this)
 
-    // 创建 rtsp server。 如果需要打开两个摄像头，经过平台测试，必须先打开id1 、 再打开id0
-    rtspServerCamera1 = RtspServerCamera2(surfaceView, this, 1935, "1")
+    // 创建 rtsp server。
+    rtspServerCamera1 = RtspServerCamera2(surfaceView, this, 1935, "0")
 
+    // 遍历支持的size
+    for (size in rtspServerCamera1.getResolutionsBack()) {
+      Log.e("stormxz", size.width.toString() + "X" + size.height)
+    }
+
+    // 可以给 预览宽高 赋值
+//    mPreviewW = 1920
+//    mPreviewH = 1440
   }
 
   override fun onResume() {
@@ -121,7 +135,7 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
   override fun onClick(view: View) {
     when (view.id) {
       R.id.b_start_stop -> if (!rtspServerCamera1.isStreaming) {
-        if (rtspServerCamera1.prepareAudio() && rtspServerCamera1.prepareVideo()) {
+        if (rtspServerCamera1.prepareAudio() && rtspServerCamera1.prepareVideo(mPreviewW, mPreviewH)) {
           button.setText(R.string.stop_button)
           // 开启camera -> rtsp 传输
           rtspServerCamera1.startStream()

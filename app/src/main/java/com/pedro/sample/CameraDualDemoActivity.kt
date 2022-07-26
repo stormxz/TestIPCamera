@@ -137,11 +137,11 @@ class CameraDualDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnC
   override fun onClick(view: View) {
     when (view.id) {
       R.id.b_start_stop_dual -> if (!rtspServerCamera1.isStreaming) {
-        if (rtspServerCamera1.prepareAudio() && rtspServerCamera1.prepareVideo()) {
+        if (rtspServerCamera1.prepareAudio() && rtspServerCamera1.prepareVideo(1920, 1080)) {
           button.setText(R.string.stop_button)
           // 开启camera -> rtsp 传输
           rtspServerCamera1.startStream()
-          if (rtspServerCamera2.prepareAudio() && rtspServerCamera2.prepareVideo()) {
+          if (rtspServerCamera2.prepareAudio() && rtspServerCamera2.prepareVideo(1920, 1080)) {
             rtspServerCamera2.startStream()
           }
           // 获取rtsp 地址
