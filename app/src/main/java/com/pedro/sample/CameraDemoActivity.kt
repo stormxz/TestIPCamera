@@ -1,31 +1,24 @@
 package com.pedro.sample
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
-import android.util.Size
-import android.view.SurfaceHolder
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.pedro.encoder.input.gl.render.filters.`object`.TextObjectFilterRender
-import com.pedro.encoder.input.video.CameraHelper
-import com.pedro.encoder.input.video.CameraOpenException
 import com.pedro.encoder.utils.gl.TranslateTo
 import com.pedro.rtsp.utils.ConnectCheckerRtsp
-import com.pedro.rtspserver.RtspServerCamera1
 import com.pedro.rtspserver.RtspServerCamera2
 import kotlinx.android.synthetic.main.activity_camera_demo.*
 import java.io.File
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClickListener {
+class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClickListener, SeekBar.OnSeekBarChangeListener  {
 
   private lateinit var rtspServerCamera1: RtspServerCamera2
 
@@ -40,6 +33,7 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
   private var mPreviewW: Int = 1920
   private var mPreviewH: Int = 1080
 
+  private lateinit var seekBar: SeekBar
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -48,6 +42,12 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
     folder = File(getExternalFilesDir(null)!!.absolutePath + "/rtmp-rtsp-stream-client-java")
     button = findViewById(R.id.b_start_stop)
     button.setOnClickListener(this)
+
+    seekBar = findViewById(R.id.seek_bar_ev)
+    seekBar.setOnSeekBarChangeListener(this)
+    seekBar.min = -24
+    seekBar.max = 24
+    seekBar.setProgress(0, false)
 
     // 创建 rtsp server。
     rtspServerCamera1 = RtspServerCamera2(surfaceView, this, 1935, "0")
@@ -141,9 +141,10 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
           rtspServerCamera1.startStream()
           // 获取rtsp 地址
           tv_url.text = rtspServerCamera1.getEndPointConnection()
+
         } else {
           Toast.makeText(this, "Error preparing stream, This device cant do it", Toast.LENGTH_SHORT)
-              .show()
+                  .show()
         }
       } else {
         button.setText(R.string.start_button)
@@ -153,5 +154,19 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
       else -> {
       }
     }
+  }
+
+  override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+    Log.e("stormxz", " seekbar progress = " + seekBar!!.progress)
+  }
+
+  override fun onStartTrackingTouch(seekBar: SeekBar?) {
+    Log.e("stormxz", " seekbar progress = " + seekBar!!.progress)
+
+  }
+
+  override fun onStopTrackingTouch(seekBar: SeekBar?) {
+    Log.e("stormxz", " seekbar progress = " + seekBar!!.progress)
+    rtspServerCamera1.setExposure(seekBar!!.progress)
   }
 }

@@ -114,3 +114,7 @@ cameraId 定义：
 添加分辨率接口
 传入宽高即可
 rtspServerCamera1.prepareVideo(mPreviewW, mPreviewH))
+
+----------------------------------------------------------------------------------------------------
+添加曝光亮度设置
+rtspServerCamera1.setExposure(seekBar!!.progress)
