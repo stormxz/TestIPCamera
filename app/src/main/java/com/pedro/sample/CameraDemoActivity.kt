@@ -172,6 +172,10 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
       }
       else {
         button.setText("open camera")
+        if (rtspServerCamera1.isRecording) {
+          rtspServerCamera1.stopRecord()
+          bRecord.setText(R.string.start_record)
+        }
         rtspServerCamera1.stopStream()
         rtspServerCamera1.stopPreview()
         tv_url.text = ""
