@@ -86,8 +86,6 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
   override fun onResume() {
     super.onResume()
 
-    // 添加OSD
-    initTimeWaterMarkFormat()
   }
 
   private fun initTimeWaterMarkFormat() {
@@ -97,8 +95,7 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
     rtspServerCamera1.glInterface.setFilter(textObjectFilterRender)
     textObjectFilterRender.setText(currentDateAndTime_watermark, 22f, Color.WHITE)
     textObjectFilterRender.setDefaultScale(
-            rtspServerCamera1.streamWidth,
-            rtspServerCamera1.streamHeight
+            640, 480
     )
     textObjectFilterRender.setPosition(TranslateTo.TOP_LEFT)
 //        spriteGestureController.setBaseObjectFilterRender(textObjectFilterRender) //Optional
@@ -163,6 +160,8 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
         if (rtspServerCamera1.prepareAudio() && rtspServerCamera1.prepareVideo(mPreviewW, mPreviewH)) {
           button.setText("close camera")
           // 开启camera -> rtsp 传输
+          // 添加OSD
+          initTimeWaterMarkFormat()
           rtspServerCamera1.startStream()
 
         } else {
