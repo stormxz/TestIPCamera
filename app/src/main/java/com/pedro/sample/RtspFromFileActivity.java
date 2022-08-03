@@ -19,6 +19,7 @@ package com.pedro.sample;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -189,12 +190,17 @@ public class RtspFromFileActivity extends AppCompatActivity
     });
   }
 
+  private int mVideoRotation = 0;
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == 5 && data != null) {
       filePath = PathUtils.getPath(this, data.getData());
-      Toast.makeText(this, filePath, Toast.LENGTH_SHORT).show();
+      MediaMetadataRetriever retr = new MediaMetadataRetriever();
+      retr.setDataSource(filePath);
+      String rotation = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+      mVideoRotation = Integer.valueOf(rotation);
+      Toast.makeText(this, filePath + " rotation = " + rotation, Toast.LENGTH_SHORT).show();
       tvFile.setText(filePath);
     }
   }
@@ -296,7 +302,7 @@ public class RtspFromFileActivity extends AppCompatActivity
 
   private boolean prepare() throws IOException {
     Log.e("stormxz", "stormxz stream video 111");
-    boolean result = rtspFromFile.prepareVideo(filePath);
+    boolean result = rtspFromFile.prepareVideo(filePath, mVideoRotation);
     result |= rtspFromFile.prepareAudio(filePath);
     return result;
   }

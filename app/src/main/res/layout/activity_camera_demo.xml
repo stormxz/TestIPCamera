@@ -43,12 +43,38 @@
             />
 
         <Button
+            android:text="@string/start_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:id="@+id/b_record"
+            android:layout_marginEnd="5dp" />
+
+        <Button
+            android:text="open camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:id="@+id/b_start_stop_stream"
+            android:layout_marginEnd="5dp" />
+
+
+        <Button
             android:text="@string/start_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
-            android:id="@+id/b_start_stop"
+            android:id="@+id/b_start_stop_server"
             android:layout_marginEnd="5dp" />
+
+        <Button
+            android:text="capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:id="@+id/b_start_capture"
+            android:layout_marginEnd="5dp" />
+
 
     </LinearLayout>
 </RelativeLayout>

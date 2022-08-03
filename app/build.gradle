@@ -30,10 +30,10 @@ dependencies {
     implementation 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:2.1.8'
 */
     implementation files('libs/rtplibrary.aar')
-    implementation files('libs/encoder.aar')
     implementation files('libs/rtmp.aar')
     implementation files('libs/rtsp.aar')
     implementation files('libs/rtspserver.aar')
+    implementation files('libs/encoder.aar')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.4.1'
