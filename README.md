@@ -118,3 +118,30 @@ rtspServerCamera1.prepareVideo(mPreviewW, mPreviewH))
 ----------------------------------------------------------------------------------------------------
 添加曝光亮度设置
 rtspServerCamera1.setExposure(seekBar!!.progress)
+
+----------------------------------------------------------------------------------------------------
+拍照：
+R.id.b_start_capture -> {
+    val df = SimpleDateFormat("yyyyMMddHHmmss")
+    capture("/storage/emulated/0/Android/data/com.pedro.sample/files/RSTP_" + df.format(Date()) + "_" + System.currentTimeMillis() + ".jpg", surfaceView)
+  }
+----------------------------------------------------------------------------------------------------
+录像：
+rtspServerCamera1.startRecord(folder.absolutePath + "/" + currentDateAndTime + ".mp4")
+rtspServerCamera1.stopRecord()
+
+----------------------------------------------------------------------------------------------------
+open camera
+        rtspServerCamera1.startStream()
+close camera
+        rtspServerCamera1.stopStream()
+        rtspServerCamera1.stopPreview()
+
+----------------------------------------------------------------------------------------------------
+
+start server
+        rtspServerCamera1.startServer()
+stop server
+        rtspServerCamera1.stopServer()
+
+ps: open camera / close camera 与 record 与 server 逻辑见demo.
