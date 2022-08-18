@@ -48,6 +48,9 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
 
   private lateinit var seekBar: SeekBar
 
+  private val textObjectFilterRender = TextObjectFilterRender()
+  private var strList : ArrayList<String> = arrayListOf()
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -85,20 +88,19 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
 
   override fun onResume() {
     super.onResume()
-
   }
 
   private fun initTimeWaterMarkFormat() {
-    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-    currentDateAndTime_watermark = sdf.format(Date())
-    val textObjectFilterRender = TextObjectFilterRender()
     rtspServerCamera1.glInterface.setFilter(textObjectFilterRender)
-    textObjectFilterRender.setText(currentDateAndTime_watermark, 22f, Color.WHITE)
-    textObjectFilterRender.setDefaultScale(
-            640, 480
-    )
-    textObjectFilterRender.setPosition(TranslateTo.TOP_LEFT)
-//        spriteGestureController.setBaseObjectFilterRender(textObjectFilterRender) //Optional
+    textObjectFilterRender.setDefaultScale(640, 480)
+    initStrList()
+    textObjectFilterRender.setImageTextureList(strList)
+  }
+
+  //初始化除时间水印之外的其他水印
+  private fun initStrList() {
+    strList.add("0.0V 0.0V 0.0A 0% 0℃ T")
+    strList.add("SIM卡盖未拧紧")
   }
 
   override fun onNewBitrateRtsp(bitrate: Long) {

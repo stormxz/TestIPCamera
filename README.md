@@ -145,3 +145,16 @@ stop server
         rtspServerCamera1.stopServer()
 
 ps: open camera / close camera 与 record 与 server 逻辑见demo.
+
+
+----------------------------------------------------------------------------------------------------
+设置水印列表（时间水印已内置，不用额外设置）
+textObjectFilterRender.setImageTextureList(ArrayList<String> strList)
+
+----------------------------------------------------------------------------------------------------
+更新水印（水印列表）内容
+textObjectFilterRender.updateStringList(ArrayList<String> strList, int[] index, String[] str)
+ex:
+textObjectFilterRender.updateStringList(strList, intArrayOf(0), arrayOf("a"))
+textObjectFilterRender.updateStringList(strList, intArrayOf(0, 1), arrayOf("a", "b"))
+...
