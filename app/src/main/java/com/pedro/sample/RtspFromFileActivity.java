@@ -101,17 +101,6 @@ public class RtspFromFileActivity extends AppCompatActivity
   @Override
   protected void onResume() {
     super.onResume();
-    initTimeWaterMarkFormat();
-  }
-
-  private void initTimeWaterMarkFormat() {
-//    RotationFilterRender rotationFilterRender = new RotationFilterRender();
-//    rtspFromFile.getGlInterface().setFilter(rotationFilterRender);
-//    rotationFilterRender.setPreviewSize(
-//            1920,
-//            1080
-//    );
-//    rotationFilterRender.setRotation(90);
   }
 
   @Override
@@ -333,36 +322,23 @@ public class RtspFromFileActivity extends AppCompatActivity
 
   @Override
   public void onVideoDecoderFinished() {
-    runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        if (rtspFromFile.isRecording()) {
-          rtspFromFile.stopRecord();
-          PathUtils.updateGallery(getApplicationContext(), folder.getAbsolutePath() + "/" + currentDateAndTime + ".mp4");
-          bRecord.setText(R.string.start_record);
-          Toast.makeText(RtspFromFileActivity.this,
-              "file " + currentDateAndTime + ".mp4 saved in " + folder.getAbsolutePath(),
-              Toast.LENGTH_SHORT).show();
-          currentDateAndTime = "";
-        }
-        if (rtspFromFile.isStreaming()) {
-          button.setText(R.string.start_button);
-          Toast.makeText(RtspFromFileActivity.this, "Video stream finished", Toast.LENGTH_SHORT)
-              .show();
-          rtspFromFile.stopStream();
-        }
-      }
-    });
+    Log.e("stormxz", " onVideoDecoderFinished rtspFromFile isstreaming = " + rtspFromFile.isStreaming());
   }
 
   @Override
   public void onAudioDecoderFinished() {
-
+      Log.e("stormxz", " onAudioDecoderFinished");
   }
 
   @Override
   public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-
+    Log.e("stormxz", " i = " + seekBar.getProgress());
+    if (seekBar.getProgress() == seekBar.getMax()) {
+      button.setText(R.string.start_button);
+      Toast.makeText(RtspFromFileActivity.this, "Video stream finished", Toast.LENGTH_SHORT)
+              .show();
+      rtspFromFile.stopStream();
+    }
   }
 
   @Override
