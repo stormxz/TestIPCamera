@@ -1,25 +1,18 @@
 package com.pedro.sample
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.view.SurfaceHolder
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.pedro.encoder.input.gl.render.filters.`object`.TextObjectFilterRender
-import com.pedro.encoder.input.video.CameraHelper
-import com.pedro.encoder.input.video.CameraOpenException
 import com.pedro.encoder.utils.gl.TranslateTo
 import com.pedro.rtsp.utils.ConnectCheckerRtsp
-import com.pedro.rtspserver.RtspServerCamera1
 import com.pedro.rtspserver.RtspServerCamera2
 import kotlinx.android.synthetic.main.activity_dual_camera_demo.*
 import java.io.File
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,8 +38,8 @@ class CameraDualDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnC
     button.setOnClickListener(this)
 
     // 创建 rtsp server。 如果需要打开两个摄像头，经过平台测试，必须先打开id1 、 再打开id0
-    rtspServerCamera1 = RtspServerCamera2(surfaceView2, this, 1935, "1")
-    rtspServerCamera2 = RtspServerCamera2(surfaceView1, this, 2000, "0")
+    rtspServerCamera1 = RtspServerCamera2(surfaceView2, this, 1935, "1", null)
+    rtspServerCamera2 = RtspServerCamera2(surfaceView1, this, 2000, "0", null)
 
   }
 

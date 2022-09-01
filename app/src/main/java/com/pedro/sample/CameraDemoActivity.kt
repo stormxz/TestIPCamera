@@ -1,10 +1,7 @@
 package com.pedro.sample
 
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -13,22 +10,23 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.pedro.encoder.input.gl.render.filters.`object`.TextObjectFilterRender
-import com.pedro.encoder.utils.BitmapUtils
 import com.pedro.encoder.utils.gl.TranslateTo
 import com.pedro.rtplibrary.view.OpenGlView
-import com.pedro.rtplibrary.view.TakePhotoCallback
 import com.pedro.rtsp.utils.ConnectCheckerRtsp
 import com.pedro.rtspserver.RtspServerCamera2
 import kotlinx.android.synthetic.main.activity_camera_demo.*
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import com.pedro.rtsp.rtsp.VideoCodec
+import com.pedro.sample.ui.OverlayView
+import com.ubeesky.lib.ai.AIDetectResult
+import com.ubeesky.lib.ai.AINative
+import com.ubeesky.lib.ai.FileUtils
 
 
-class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClickListener, SeekBar.OnSeekBarChangeListener  {
+class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClickListener, SeekBar.OnSeekBarChangeListener, AINative.AICallback{
 
   private lateinit var rtspServerCamera1: RtspServerCamera2
 
@@ -49,7 +47,14 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
   private lateinit var seekBar: SeekBar
 
   private val textObjectFilterRender = TextObjectFilterRender()
-  private var strList : ArrayList<String> = arrayListOf()
+
+  private var strList_top_left : ArrayList<String> = arrayListOf()
+  private var strList_top_right : ArrayList<String> = arrayListOf()
+  private var strList_bottom_left : ArrayList<String> = arrayListOf()
+  private var strList_bottom_right : ArrayList<String> = arrayListOf()
+
+  private lateinit var aiNative: AINative
+  private lateinit var overlayView: OverlayView
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -70,8 +75,12 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
     seekBar.max = 24
     seekBar.setProgress(0, false)
 
+    overlayView = findViewById(R.id.overlay)
+    aiNative = AINative(this)
+    modelInit()
+
     // 创建 rtsp server。
-    rtspServerCamera1 = RtspServerCamera2(surfaceView, this, 1935, "1")
+    rtspServerCamera1 = RtspServerCamera2(surfaceView, this, 1935, "1", aiNative)
 
     // 遍历支持的size
     for (size in rtspServerCamera1.getResolutionsBack()) {
@@ -88,19 +97,53 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
 
   override fun onResume() {
     super.onResume()
+    val timer = Timer()
+    val task: TimerTask = object : TimerTask() {
+      override fun run() {
+        //要推迟执行的方法
+        textObjectFilterRender.updateStringList(
+          strList_top_left,
+          intArrayOf(0, 1),
+          arrayOf(System.currentTimeMillis().toString(), (System.currentTimeMillis() * 2).toString()),
+          TranslateTo.TOP_LEFT
+        )
+        textObjectFilterRender.updateStringList(
+          strList_bottom_right,
+          intArrayOf(1, 3),
+          arrayOf((System.currentTimeMillis() * 3).toString(), (System.currentTimeMillis() * 4).toString()),
+          TranslateTo.BOTTOM_RIGHT
+        )
+      }
+    }
+    timer.schedule(task, 1000, 30000)
   }
 
   private fun initTimeWaterMarkFormat() {
     rtspServerCamera1.glInterface.setFilter(textObjectFilterRender)
     textObjectFilterRender.setDefaultScale(640, 480)
     initStrList()
-    textObjectFilterRender.setImageTextureList(strList)
+    textObjectFilterRender.setImageTextureList(strList_top_left, TranslateTo.TOP_LEFT)
+    textObjectFilterRender.setImageTextureList(strList_top_right, TranslateTo.TOP_RIGHT)
+    textObjectFilterRender.setImageTextureList(strList_bottom_left, TranslateTo.BOTTOM_LEFT)
+    textObjectFilterRender.setImageTextureList(strList_bottom_right, TranslateTo.BOTTOM_RIGHT)
   }
 
   //初始化除时间水印之外的其他水印
   private fun initStrList() {
-    strList.add("0.0V 0.0V 0.0A 0% 0℃ T")
-    strList.add("SIM卡盖未拧紧")
+    strList_top_left.add("0.0V 0.0V 0.0A 0% 0℃ T")
+    strList_top_left.add("SIM卡盖未拧紧")
+
+    strList_top_right.add("水印 2.1")
+    strList_top_right.add("水印 2.2")
+
+    strList_bottom_left.add("水印 3.1")
+    strList_bottom_left.add("水印 3.2")
+    strList_bottom_left.add("水印 3.3")
+
+    strList_bottom_right.add("水印 4.1")
+    strList_bottom_right.add("水印 4.2")
+    strList_bottom_right.add("水印 4.3")
+    strList_bottom_right.add("水印 4.4")
   }
 
   override fun onNewBitrateRtsp(bitrate: Long) {
@@ -250,6 +293,49 @@ class CameraDemoActivity : AppCompatActivity(), ConnectCheckerRtsp, View.OnClick
 
   fun capture(string : String, view: OpenGlView) {
     view.capture(string)
+  }
+
+  private fun modelInit() {
+    val modelPath: String = copyModel().toString()
+    val ret: Int = aiNative.init(modelPath, 1)
+    val msg = "模型初始化：" + if (ret == -1) "失败" else "成功"
+  }
+
+  private fun copyModel(): String? {
+    val targetDir: String = this.filesDir.absolutePath
+    val modelPathsDetector = arrayOf(
+      "nanodet_m.tnnmodel",
+      "nanodet_m.tnnproto"
+    )
+    for (i in modelPathsDetector.indices) {
+      val modelFilePath = modelPathsDetector[i]
+      val interModelFilePath = "$targetDir/$modelFilePath"
+      FileUtils.copyAsset(
+        this.assets,
+        "model/$modelFilePath", interModelFilePath
+      )
+    }
+    return targetDir
+  }
+
+  override fun steamAIResult(results: Array<AIDetectResult>?) {
+    overlayView.setResults(results)
+    if (results != null) {
+      printArray(results)
+    }
+  }
+
+  override fun imageAIResult(results: Array<AIDetectResult>?) {
+    TODO("Not yet implemented")
+  }
+
+  private fun printArray(aiDetectResults: Array<AIDetectResult>?) {
+    if (aiDetectResults == null) {
+      return
+    }
+    for (result in aiDetectResults) {
+      Log.d("cc", result.toString())
+    }
   }
 
 }

@@ -149,12 +149,20 @@ ps: open camera / close camera 与 record 与 server 逻辑见demo.
 
 ----------------------------------------------------------------------------------------------------
 设置水印列表（时间水印已内置，不用额外设置）
-textObjectFilterRender.setImageTextureList(ArrayList<String> strList)
+textObjectFilterRender.setImageTextureList(ArrayList<String> strList, TranslateTo positionTo)
+
+左下和右下两端的水印设置，按照设置的顺序，自下向上显示
 
 ----------------------------------------------------------------------------------------------------
 更新水印（水印列表）内容
-textObjectFilterRender.updateStringList(ArrayList<String> strList, int[] index, String[] str)
+textObjectFilterRender.updateStringList(ArrayList<String> strList, int[] index, String[] str, TranslateTo positionTo)
 ex:
-textObjectFilterRender.updateStringList(strList, intArrayOf(0), arrayOf("a"))
-textObjectFilterRender.updateStringList(strList, intArrayOf(0, 1), arrayOf("a", "b"))
+textObjectFilterRender.updateStringList(strList_top_left, intArrayOf(0), arrayOf("a"), TranslateTo.TOP_LEFT)
+textObjectFilterRender.updateStringList(strList_bottom_right, intArrayOf(0, 1), arrayOf("a", "b"), TranslateTo.BOTTOM_RIGHT)
 ...
+
+----------------------------------------------------------------------------------------------------
+AI显示
+实例化AiNative aiNative，overlayView
+创建RtspServerCamera2时传入aiNative
+UI显示直接将AI返回数组通过overlayView.setResults(results)

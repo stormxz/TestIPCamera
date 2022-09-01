@@ -11,6 +11,12 @@
         android:id="@+id/surfaceView"
         />
 
+    <com.pedro.sample.ui.OverlayView
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true" />
+
     <TextView
         android:textSize="24sp"
         android:textColor="@color/appColor"
